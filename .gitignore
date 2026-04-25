@@ -1,0 +1,42 @@
+# ─── Dependencies ───────────────────────────────────────────────
+node_modules/
+
+# ─── Environment / Secrets ──────────────────────────────────────
+.env
+.env.local
+.env.*.local
+
+# ─── Playwright ─────────────────────────────────────────────────
+# Test result artifacts (screenshots, videos, traces, reports)
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+
+# ─── Generated Outputs ──────────────────────────────────────────
+# Runtime-generated files produced by the QA engine pipeline
+outputs/
+
+# ─── OS & Editor ────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# ─── Logs ───────────────────────────────────────────────────────
+logs/
+*.log
+npm-debug.log*
+
+# ─── Playwright test spec placeholder ──────────────────────────
+tests/.gitkeep
+
+# ─── Misc ───────────────────────────────────────────────────────
+*.tmp
+*.bak
