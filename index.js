@@ -1,5 +1,5 @@
 // index.js
-import { Orchestrator } from './agents/orchestrator.js';
+import Orchestrator from './agents/orchestrator.js';
 
 async function main() {
     const rawInput = `

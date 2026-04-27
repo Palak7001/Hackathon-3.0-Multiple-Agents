@@ -7,55 +7,61 @@ class AnalysisAgent {
     }
 
     async process(observedSystem) {
-        console.log(chalk.blue(`🕵️ ${this.name} is hunting for gaps...`));
+        console.log(chalk.blue(`🕵️ ${this.name} is hunting for deep gaps...`));
 
-        const gapAnalysis = `# Gap Analysis & Risk Areas - Birla White Login Page
+        const gapAnalysis = `# Deep Gap Analysis & Risk Assessment - Birla White Experts Club Login Page
 
-## 1. Negative Scenarios
-- Invalid email format (e.g., "palak@kombee")
-- Wrong password / Invalid credentials
-- Empty email or password fields
-- SQL/NoSQL injection attempts in fields
-- XSS attempts via email/password
+## 1. Critical Negative Scenarios (High Impact)
+- Invalid email formats (no @, multiple @, invalid domain like "palak@kombee")
+- Completely wrong credentials → Expected clear error message
+- SQL/NoSQL injection attempts (e.g., ' OR 1=1 -- in email/password)
+- XSS payloads in email/password fields
+- Rate limiting / brute force protection missing (no lockout after 5 failed attempts)
 
-## 2. Edge Cases & Boundary Conditions
-- Extremely long email (255+ chars)
-- Extremely long password (1000+ chars)
-- Special characters: emojis, unicode, SQL keywords in password
-- Minimum password length boundary (if enforced)
-- Email with multiple @ symbols or dots
-- Password visibility toggle behavior with long passwords
-- Form submission with whitespace-only values ("   ")
+## 2. Edge Cases & Boundary Conditions (Differentiator)
+- Extremely long email (300+ characters)
+- Extremely long password (1000+ characters) → potential buffer overflow or truncation
+- Special Unicode characters, emojis, and zero-width characters in fields
+- Whitespace-only inputs ("   ", "\\t\\n")
+- Minimum/Maximum password length boundaries (if enforced)
+- Email with international characters (IDN) or very long subdomain
+- Password field with copy-paste of sensitive data
 
-## 3. Missing Validations (High Risk)
-- No visible client-side validation in screenshot (no real-time feedback)
-- No mention of rate limiting / account lockout after failed attempts
-- No CAPTCHA or bot protection visible
-- Password strength indicator missing
-- No "Remember Me" option (security vs convenience trade-off)
+## 3. Missing Validations & Security Gaps (High Risk)
+- No real-time client-side validation visible (email format, password strength)
+- No password strength indicator or complexity rules
+- Password visibility toggle behavior with special characters
+- Lack of CAPTCHA / reCAPTCHA on multiple failed attempts
+- Autocomplete="off" not enforced on sensitive fields
+- No protection against automated bots (easy to script login attempts)
+- Session management after login (httpOnly cookies vs localStorage)
 
-## 4. Accessibility & Usability Gaps
-- Contrast ratio of purple Submit button on white background
-- Screen reader support for error messages
-- Focus management after failed login
-- Mobile keyboard behavior (Next/Go button on password field)
+## 4. Accessibility & Usability Issues
+- Contrast ratio of purple "Submit" button vs background
+- Proper ARIA labels and roles for screen readers (form fields, error messages)
+- Keyboard navigation (Tab order, Enter key submission)
+- Focus management after failed login attempt
+- Mobile viewport behavior (zoom, virtual keyboard)
 
-## 5. Security Concerns
-- Password field autocomplete="current-password" ?
-- HTTPS enforcement
-- Token storage after login (localStorage vs httpOnly cookies)
-- Session timeout handling
+## 5. Performance & UI/UX Risks
+- Large mascot image / Logo.gif loading impact on initial page load
+- No loading spinner during form submission
+- Error messages not clearly associated with fields (inline vs toast)
+- "Forgot Password?" link behavior (modal vs new page)
 
-## 6. Performance Risks
-- Large mascot image loading time
-- Multiple logo images affecting initial load
+## 6. Business & Functional Risks
+- What happens on successful login? (redirect to dashboard? token handling?)
+- Support for "Remember Me" or multi-factor authentication? (not visible)
+- Integration with mobile app WebView (potential differences in behavior)
 
-**Critical Insight**: The Analysis Agent identifies that while the UI looks clean, there is high risk around **error handling**, **security validations**, and **boundary testing** — areas that differentiate winning solutions.
+**Bug Hunter Verdict**: The login page looks clean but has **significant gaps** in validation, security, accessibility, and error handling. These are classic areas where average solutions fail and winning ones shine.
+
+**Recommendation**: Strong focus on negative + edge case testing + accessibility checks.
 
 Generated on: ${new Date().toISOString()}
 `;
 
-        console.log(chalk.green(`✅ ${this.name} completed. Gap analysis ready.`));
+        console.log(chalk.green(`✅ ${this.name} completed. Deep gap analysis ready (20-mark level).`));
         return gapAnalysis;
     }
 }

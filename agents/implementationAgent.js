@@ -6,7 +6,7 @@ class ImplementationAgent {
         this.name = "Playwright Code Smith Agent";
     }
 
-    async generateCode(testPlan) {
+    async process(testPlan) {
         console.log(chalk.blue(`⚙️ ${this.name} is forging Playwright tests...`));
 
         const testCode = `// tests/birla-white-login.spec.js

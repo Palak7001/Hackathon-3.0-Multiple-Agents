@@ -1,7 +1,7 @@
 // tests/birla-white-login.spec.js
 import { test, expect } from '@playwright/test';
 
-const BASE_URL = 'https://uatawsexpertsclub.birlawhite.com/'; // Update this URL
+const BASE_URL = 'https://uatawsexpertsclub.birlawhite.com/';
 
 test.describe('Birla White Experts Club Login Page', () => {
 
@@ -9,7 +9,6 @@ test.describe('Birla White Experts Club Login Page', () => {
     await page.goto(BASE_URL);
   });
 
-  // TC001 - Happy path login
   test('TC001 - Successful Login (Happy Path)', async ({ page }) => {
     await page.fill('input[type="email"]', 'palak.desai@kombee.com');
     await page.fill('input[type="password"]', 'Admin@123');
@@ -22,10 +21,7 @@ test.describe('Birla White Experts Club Login Page', () => {
     const passwordInput = page.locator('input[type="password"]');
     await passwordInput.fill('VisiblePassword123');
 
-    // Grab the page HTML to find the actual eye-icon element
-    const bodyHTML = await page.locator('body').innerHTML();
-
-    // Try every plausible eye-icon selector
+    // Try multiple common eye-icon patterns
     const eyeSelectors = [
       '[data-testid="toggle-password"]',
       'button[aria-label*="password" i]',
@@ -44,7 +40,6 @@ test.describe('Birla White Experts Club Login Page', () => {
       'input[type="password"] ~ button',
       'input[type="password"] ~ i',
       'input[type="password"] ~ svg',
-      // React/MUI icon patterns
       '[class*="InputAdornment"] button',
       '[class*="InputAdornment"] span',
       '[class*="adornment" i] button',
@@ -66,7 +61,6 @@ test.describe('Birla White Experts Club Login Page', () => {
 
     if (toggled) {
       await page.waitForTimeout(300);
-      // Accept either 'text' (toggled) or 'password' (toggle didn't change type but click worked)
       const inputType = await page
         .locator('input[type="text"], input[type="password"]')
         .nth(0)
@@ -74,10 +68,7 @@ test.describe('Birla White Experts Club Login Page', () => {
         .catch(() => 'password');
       expect(['text', 'password']).toContain(inputType);
     } else {
-      // Log the available interactive elements near password for debugging
-      console.warn('TC002: No eye-icon found. Check the DOM structure of the password field.');
-      console.warn('Body snippet:', bodyHTML.substring(0, 2000));
-      // Soft-skip — don't fail the suite over a missing toggle
+      console.warn('TC002: No eye-icon found. Skipping test.');
       test.skip();
     }
   });
@@ -89,7 +80,6 @@ test.describe('Birla White Experts Club Login Page', () => {
 
     const currentUrl = page.url();
     const errorVisible = await page.locator('text=/required|cannot be empty|mandatory|invalid|error/i').isVisible().catch(() => false);
-    // Pass if: error shown, OR redirected back to login, OR NOT on dashboard/home
     const notAuthenticated = currentUrl.includes('login') ||
       currentUrl.includes('signin') ||
       (!currentUrl.includes('dashboard') && !currentUrl.includes('/home') && !currentUrl.includes('/scan'));
@@ -113,7 +103,6 @@ test.describe('Birla White Experts Club Login Page', () => {
     expect(errorVisible || notAuthenticated).toBeTruthy();
   });
 
-  // TC005 - Wrong credentials: app should show error message
   test('TC005 - Wrong Credentials', async ({ page }) => {
     await page.fill('input[type="email"]', 'wrong@kombee.com');
     await page.fill('input[type="password"]', 'WrongPass123');
@@ -128,10 +117,10 @@ test.describe('Birla White Experts Club Login Page', () => {
     await page.waitForTimeout(2000);
 
     const currentUrl = page.url();
-    const errorVisible = await page.locator('text=/required|email|invalid|error/i').isVisible().catch(() => false);
     const notAuthenticated = currentUrl.includes('login') ||
       currentUrl.includes('signin') ||
       (!currentUrl.includes('dashboard') && !currentUrl.includes('/home') && !currentUrl.includes('/scan'));
+    const errorVisible = await page.locator('text=/required|email|invalid|error/i').isVisible().catch(() => false);
 
     expect(errorVisible || notAuthenticated).toBeTruthy();
   });
@@ -143,15 +132,14 @@ test.describe('Birla White Experts Club Login Page', () => {
     await page.waitForTimeout(2000);
 
     const currentUrl = page.url();
-    const errorVisible = await page.locator('text=/required|password|invalid|error/i').isVisible().catch(() => false);
     const notAuthenticated = currentUrl.includes('login') ||
       currentUrl.includes('signin') ||
       (!currentUrl.includes('dashboard') && !currentUrl.includes('/home') && !currentUrl.includes('/scan'));
+    const errorVisible = await page.locator('text=/required|password|invalid|error/i').isVisible().catch(() => false);
 
     expect(errorVisible || notAuthenticated).toBeTruthy();
   });
 
-  // TC008 - Forgot password link
   test('TC008 - Forgot Password Link Visible and Clickable', async ({ page }) => {
     const forgotLink = page.locator('text=/forgot password/i');
     await expect(forgotLink).toBeVisible();
@@ -161,12 +149,10 @@ test.describe('Birla White Experts Club Login Page', () => {
     expect(navigated).toBeTruthy();
   });
 
-  // TC009 - Branding visible
   test('TC009 - Page Title and Branding Visible', async ({ page }) => {
     await expect(page.locator('text=/Birla White/i').first()).toBeVisible();
   });
 
-  // TC010 - Keyboard navigation
   test('TC010 - Keyboard Navigation (Tab + Enter)', async ({ page }) => {
     await page.focus('input[type="email"]');
     await page.keyboard.type('palak.desai@kombee.com');
@@ -174,7 +160,6 @@ test.describe('Birla White Experts Club Login Page', () => {
     await page.keyboard.type('Test@12345');
     await page.keyboard.press('Enter');
     await page.waitForTimeout(2000);
-    // Should have attempted navigation (not still on a blank state)
     expect(page.url()).toBeTruthy();
   });
 

@@ -6,7 +6,9 @@ class ReviewAgent {
         this.name = "Failure Forensics Agent";
     }
 
-    async analyze(testResults, testPlan) {
+    async process(input) {
+        const testResults = input?.testResults || input;
+        const testPlan = input?.testPlan;
         console.log(chalk.blue(`🔍 ${this.name} is analyzing failures...`));
 
         const reviewReport = `# Review Report - Birla White Login Testing

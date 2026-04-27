@@ -8,7 +8,7 @@ class ExecutionAgent {
         this.name = "Test Runner Agent";
     }
 
-    async executeTests() {
+    async process() {
         console.log(chalk.blue(`▶️ ${this.name} is executing real Playwright tests...`));
 
         try {

@@ -6,9 +6,9 @@ class PlanningAgent {
         this.name = "Test Strategist Agent";
     }
 
-    async process(gapAnalysis, requirement) {
-        console.log(chalk.blue(`📝 ${this.name} is creating test plan...`));
-
+   async process(input) {
+    const { gapAnalysis, requirement } = typeof input === 'object' ? input : { gapAnalysis: input, requirement: '' };
+    // ... rest of the code remains same
         const testPlan = `# Test Plan - Birla White Experts Club Login
 
 ## 1. Test Categories
